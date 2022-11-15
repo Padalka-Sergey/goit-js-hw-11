@@ -1,19 +1,29 @@
-import axios from 'axios';
-const BASE_URL = 'https://pixabay.com/api/';
-const KEY = '?key=31316386-df3d7a07dab36b9800dfb8d2b';
-const PROP = '&image_type=photo&orientation=horizontal&safesearch=true';
+// import axios from 'axios';
+// import { page } from '../index.js';
+// const BASE_URL = 'https://pixabay.com/api/';
+// const KEY = '?key=31316386-df3d7a07dab36b9800dfb8d2b';
+// const PROP = '&image_type=photo&orientation=horizontal&safesearch=true';
+// const PER_PAGE = '&&per_page=40';
+// let page = 1;
 
-async function fetchValues(value) {
-  const response = await axios.get(`${BASE_URL}${KEY}&q=${value}${PROP}`);
+// async function fetchValues(value) {
+//   console.log(page);
+//   const response = await axios.get(
+//     `${BASE_URL}${KEY}&q=${value}${PROP}&page=${page}${PER_PAGE}`
+//   );
 
-  // if (!response.ok) {
-  //   throw new Error(response.status);
-  // }
+// if (!response.ok) {
+//   throw new Error(response.status);
+// }
 
-  return response.data.hits;
-}
+//   response => {
+//     page += 1;
+//     return response.data.hits;
+//   };
+// }
 
-export { fetchValues };
+// export { fetchValues };
+// export { page };
 
 // =============================================
 // import axios from 'axios';

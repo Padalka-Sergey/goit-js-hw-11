@@ -9,12 +9,14 @@ body {
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
   background-color: lightcyan;
-  /* background-color: coral; */
   color: #212121;
   line-height: 1.5;
 }
 
 .search-form {
+  position: fixed;
+  width: 100%;
+
   display: flex;
   justify-content: center;
   background-color: rgb(162, 130, 238);
@@ -22,17 +24,56 @@ body {
   padding-bottom: 10px;
 }
 
+.input-container {
+  position: relative;
+}
+
+input {
+  width: 250px;
+  padding: 5px;
+  border-radius: 7px;
+  border: transparent;
+}
+
+input:focus {
+  outline: rgba(0, 0, 0, 0);
+}
+
+.btn-submit {
+  position: absolute;
+  border: transparent;
+  top: 1px;
+  right: 0;
+  padding: 5px;
+  border-radius: 7px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
+  background-color: rgb(230, 220, 207);
+}
+
 .gallery {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-top: 60px;
   gap: 10px;
+}
+
+.photo-card {
+  box-shadow: 0px 1px 3px rgb(0 0 0 / 12%), 0px 1px 1px rgb(0 0 0 / 14%),
+    0px 2px 1px rgb(0 0 0 / 20%);
 }
 
 img {
   width: 250px;
   height: 180px;
   object-fit: cover;
+}
+
+svg {
+  display: block;
 }
 
 .info {
@@ -45,6 +86,23 @@ img {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.load-more {
+  font-size: 16px;
+  font-weight: 700;
+  display: block;
+  margin: 10px auto;
+  padding: 7px 12px;
+  background-color: rgb(30, 30, 175);
+  color: white;
+  border-radius: 7px;
+  border: transparent;
+  cursor: pointer;
+}
+
+.load-more:hover {
+  background-color: rgb(10, 10, 133);
 }
 
 /* #search-box {
@@ -93,6 +151,6 @@ ul {
   font-size: 30px;
 } */
 
-/* .none {
+.is-hidden {
   display: none;
-} */
+}
