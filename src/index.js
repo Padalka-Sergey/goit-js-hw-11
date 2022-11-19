@@ -1,6 +1,12 @@
 import './css/styles.css';
 import axios from 'axios';
 import Notiflix from 'notiflix';
+// import throttle from 'lodash.throttle';
+
+// Описан в документации
+import SimpleLightbox from 'simplelightbox';
+// Дополнительный импорт стилей
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let getEl = selector => document.querySelector(selector);
 
@@ -17,6 +23,8 @@ let page = 1;
 let inputFormValue = '';
 let responseData = null;
 
+let galleryLight = new SimpleLightbox('.gallery a');
+
 async function fetchValues(value) {
   console.log(page);
   const response = await axios.get(
@@ -26,9 +34,9 @@ async function fetchValues(value) {
   // if (!response.ok) {
   //   throw new Error(response.status);
   // }
-
   page += 1;
   responseData = response.data;
+  // onNotifSuccess();
   console.log(responseData.totalHits);
   return responseData.hits;
 }
@@ -44,6 +52,8 @@ function onFetchGallery(event) {
   inputFormValue = event.currentTarget.elements.searchQuery.value;
 
   onFetchValues();
+
+  onSuccess();
 }
 
 function onFetchLoadBtn(event) {
@@ -62,7 +72,9 @@ function onMarkup(dataInput) {
     .map(item => {
       return `
               <div class="photo-card">
-                  <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
+                  <a href="${item.largeImageURL}">
+                   <img src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
+                  </a>
                   <div class="info">
                       <p class="info-item"><b>Likes</b><span>${item.likes}<span/></p>
                       <p class="info-item"><b>Views</b><span>${item.views}<span/></p>
@@ -74,17 +86,39 @@ function onMarkup(dataInput) {
     .join('');
 
   gallery.insertAdjacentHTML('beforeend', markupGallery);
+  galleryLight.refresh();
   loadBtn.classList.remove('is-hidden');
   console.log(page);
   if (page * 40 - 40 >= responseData.totalHits) {
     loadBtn.classList.add('is-hidden');
-    Notiflix.Notify.info(
-      `We're sorry, but you've reached the end of search results.`,
-      {
-        timeout: 6000,
-      }
-    );
+    onNotifInfo();
   }
+}
+
+// const galleryLight = new SimpleLightbox('.gallery a');
+
+const onSuccess = () => {
+  setTimeout(() => {
+    onNotifSuccess();
+  }, 1000);
+};
+
+function onNotifSuccess() {
+  Notiflix.Notify.success(
+    `Hooray! We found ${responseData.totalHits} images.`,
+    {
+      timeout: 6000,
+    }
+  );
+}
+
+function onNotifInfo() {
+  Notiflix.Notify.info(
+    `We're sorry, but you've reached the end of search results.`,
+    {
+      timeout: 6000,
+    }
+  );
 }
 
 function onEmpty() {

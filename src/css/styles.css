@@ -70,6 +70,7 @@ img {
   width: 250px;
   height: 180px;
   object-fit: cover;
+  cursor: pointer;
 }
 
 svg {
