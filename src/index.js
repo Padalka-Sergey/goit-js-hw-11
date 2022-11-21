@@ -1,11 +1,10 @@
 import './css/styles.css';
-import axios from 'axios';
+import { fetchValues, responseData } from './fetch/fetchValues';
+// import axios from 'axios';
 import Notiflix from 'notiflix';
-// import throttle from 'lodash.throttle';
+import throttle from 'lodash.throttle';
 
-// Описан в документации
 import SimpleLightbox from 'simplelightbox';
-// Дополнительный импорт стилей
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let getEl = selector => document.querySelector(selector);
@@ -15,31 +14,12 @@ const form = getEl('#search-form');
 const gallery = getEl('.gallery');
 const loadBtn = getEl('.load-more');
 
-const BASE_URL = 'https://pixabay.com/api/';
-const KEY = '?key=31316386-df3d7a07dab36b9800dfb8d2b';
-const PROP = '&image_type=photo&orientation=horizontal&safesearch=true';
-const PER_PAGE = '&&per_page=40';
-let page = 1;
 let inputFormValue = '';
-let responseData = null;
+
+let isLoading = false;
+let shouldLoad = true;
 
 let galleryLight = new SimpleLightbox('.gallery a');
-
-async function fetchValues(value) {
-  console.log(page);
-  const response = await axios.get(
-    `${BASE_URL}${KEY}&q=${value}${PROP}&page=${page}${PER_PAGE}`
-  );
-
-  // if (!response.ok) {
-  //   throw new Error(response.status);
-  // }
-  page += 1;
-  responseData = response.data;
-  // onNotifSuccess();
-  console.log(responseData.totalHits);
-  return responseData.hits;
-}
 
 form.addEventListener('submit', onFetchGallery);
 loadBtn.addEventListener('click', onFetchLoadBtn);
@@ -56,18 +36,43 @@ function onFetchGallery(event) {
   onSuccess();
 }
 
+// ==============================================
+
+window.addEventListener(
+  'scroll',
+  throttle(() => {
+    throttleScroll();
+  }, 250)
+);
+
+function throttleScroll() {
+  const { scrollHeight, scrollTop, clientHeight } = document.documentElement;
+  if (scrollTop >= scrollHeight - clientHeight - 1000) {
+    onFetchLoadBtn();
+  }
+}
+
+// ==============================================
+
 function onFetchLoadBtn(event) {
-  event.preventDefault();
+  // event.preventDefault();
+  if (isLoading || !shouldLoad) return;
+  isLoading = true;
 
   onFetchValues();
 }
 
 function onMarkup(dataInput) {
-  console.log(dataInput);
-  if (dataInput.length === 0) {
+  // console.log(dataInput);
+  if (dataInput.length === 0 || dataInput.length === undefined) {
     onEmpty();
     return;
   }
+
+  if (dataInput.length === undefined) {
+    return;
+  }
+
   const markupGallery = dataInput
     .map(item => {
       return `
@@ -87,15 +92,23 @@ function onMarkup(dataInput) {
 
   gallery.insertAdjacentHTML('beforeend', markupGallery);
   galleryLight.refresh();
-  loadBtn.classList.remove('is-hidden');
-  console.log(page);
+  // const { height: cardHeight } = document
+  //   .querySelector('.gallery')
+  //   .firstElementChild.getBoundingClientRect();
+
+  // window.scrollBy({
+  //   top: cardHeight * 2,
+  //   behavior: 'smooth',
+  // });
+  // loadBtn.classList.remove('is-hidden');
   if (page * 40 - 40 >= responseData.totalHits) {
-    loadBtn.classList.add('is-hidden');
+    // loadBtn.classList.add('is-hidden');
+    console.log(responseData);
+    shouldLoad = false;
     onNotifInfo();
   }
+  isLoading = false;
 }
-
-// const galleryLight = new SimpleLightbox('.gallery a');
 
 const onSuccess = () => {
   setTimeout(() => {
