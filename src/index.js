@@ -1,5 +1,5 @@
 import './css/styles.css';
-import { fetchValues, responseData } from './fetch/fetchValues';
+import { fetchValues, responseData, page } from './fetch/fetchValues';
 // import axios from 'axios';
 import Notiflix from 'notiflix';
 import throttle from 'lodash.throttle';
