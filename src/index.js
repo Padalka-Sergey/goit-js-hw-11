@@ -8,6 +8,7 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 let getEl = selector => document.querySelector(selector);
+// console.log('Davay')
 
 const form = getEl('#search-form');
 // const textValue = getEl('input[name=searchQuery]');
