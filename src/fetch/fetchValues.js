@@ -23,4 +23,4 @@ async function fetchValues(value) {
   return responseData.hits;
 }
 
-export { fetchValues, responseData, page };
+export { fetchValues, responseData };
