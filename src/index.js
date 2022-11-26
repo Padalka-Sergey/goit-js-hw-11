@@ -21,6 +21,8 @@ let isLoading = false;
 let shouldLoad = true;
 
 let galleryLight = new SimpleLightbox('.gallery a');
+let page = 1;
+export { page };
 
 form.addEventListener('submit', onFetchGallery);
 loadBtn.addEventListener('click', onFetchLoadBtn);

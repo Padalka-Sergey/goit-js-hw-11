@@ -1,10 +1,11 @@
 import axios from 'axios';
+import { page } from '../index.js';
 
 const BASE_URL = 'https://pixabay.com/api/';
 const KEY = '?key=31316386-df3d7a07dab36b9800dfb8d2b';
 const PROP = '&image_type=photo&orientation=horizontal&safesearch=true';
 const PER_PAGE = '&&per_page=40';
-let page = 1;
+// let page = 1;
 let responseData = null;
 
 async function fetchValues(value) {
